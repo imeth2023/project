@@ -15,7 +15,7 @@ def generate_colorful_pattern():
             print(row)
             time.sleep(0.1)
         
-        print('\n' * 10)  # Clear the screen
+        print('\n' * 10)
 
 if __name__ == '__main__':
     generate_colorful_pattern()
