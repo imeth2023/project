@@ -1,21 +1,47 @@
-import random
-import time
+def print_board(board):
+    for row in board:
+        print(" | ".join(row))
+        print("-" * 9)
 
-def generate_colorful_pattern():
-    colors = ['\033[91m', '\033[92m', '\033[93m', '\033[94m', '\033[95m', '\033[96m']
-    reset = '\033[0m'
-    
+def check_win(board, player):
+    for row in board:
+        if all(cell == player for cell in row):
+            return True
+
+    for col in range(3):
+        if all(board[row][col] == player for row in range(3)):
+            return True
+
+    if all(board[i][i] == player for i in range(3)) or all(board[i][2 - i] == player for i in range(3)):
+        return True
+
+    return False
+
+def is_full(board):
+    return all(cell != " " for row in board for cell in row)
+
+def tic_tac_toe():
+    board = [[" " for _ in range(3)] for _ in range(3)]
+    player = "X"
+
     while True:
-        for _ in range(10):
-            row = ''
-            for _ in range(20):
-                color = random.choice(colors)
-                character = chr(random.randint(33, 126))
-                row += f'{color}{character}{reset} '
-            print(row)
-            time.sleep(0.1)
-        
-        print('\n' * 10)
+        print_board(board)
+        row, col = map(int, input(f"Player {player}, enter row and column (e.g., 1 2): ").split())
+        if board[row - 1][col - 1] == " ":
+            board[row - 1][col - 1] = player
+
+            if check_win(board, player):
+                print_board(board)
+                print(f"Player {player} wins!")
+                break
+            elif is_full(board):
+                print_board(board)
+                print("It's a tie!")
+                break
+
+            player = "O" if player == "X" else "X"
+        else:
+            print("Invalid move. Try again.")
 
 if __name__ == '__main__':
-    generate_colorful_pattern()
+    tic_tac_toe()
